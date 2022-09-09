@@ -1558,13 +1558,13 @@ class CapData(object):
                     print("Read: " + filename)
         else:
             if not load_pvsyst:
-                all_sensors = self.load_das(path, fname, source=source, **kwargs)  # noqa: E501
+                all_sensors = self.load_das(path, fname, source=source, **kwargs)  # noqa: E501 all_data.columns
             elif load_pvsyst:
                 all_sensors = self.load_pvsyst(path, fname, **kwargs)
 
         ix_ser = all_sensors.index.to_series()
         all_sensors['index'] = ix_ser.apply(lambda x: x.strftime('%m/%d/%Y %H %M'))  # noqa: E501
-        self.data = all_sensors
+        self.data = all_sensors # self.data.columns
 
         if not load_pvsyst:
             if clear_sky:
@@ -1711,6 +1711,7 @@ class CapData(object):
                                     bounds_check=False).tolist()
         irr_types = self.data.apply(self.__series_type, args=(irr_sensors_defs,),  # noqa: E501
                                     bounds_check=False).tolist()
+                                    
 
         col_indices = []
         for typ, sub_typ, irr_typ in zip(col_types, sub_types, irr_types):
